@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryWeaver AI - Create Your Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ StoryWeaver AI ✨</h1>
+            <p class="tagline">Create immersive stories powered by AI agents</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Create Your Story</h2>
+                <form id="storyForm">
+                    <div class="form-group">
+                        <label for="prompt">📖 Your Story Prompt:</label>
+                        <textarea
+                            id="prompt"
+                            name="prompt"
+                            placeholder="e.g., A young explorer discovers a hidden city in the jungle..."
+                            required
+                            rows="4"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="style">🎨 Story Style:</label>
+                            <select id="style" name="style">
+                                <option value="adventure">Adventure</option>
+                                <option value="mystery">Mystery</option>
+                                <option value="fantasy">Fantasy</option>
+                                <option value="sci-fi">Sci-Fi</option>
+                                <option value="romance">Romance</option>
+                                <option value="thriller">Thriller</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="length">📏 Story Length:</label>
+                            <select id="length" name="length">
+                                <option value="short">Short</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="long">Long</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numCharacters">👥 Number of Characters:</label>
+                            <select id="numCharacters" name="numCharacters">
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">🚀 Generate Story</button>
+                </form>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator hidden">
+                <div class="spinner"></div>
+                <p>Creating your story... This may take a moment.</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message hidden"></div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section hidden">
+                <!-- Pipeline Progress -->
+                <div class="pipeline-progress">
+                    <h3>🔄 Pipeline Progress</h3>
+                    <div class="progress-stages">
+                        <div class="stage" data-stage="story">
+                            <div class="stage-indicator">1</div>
+                            <div class="stage-label">Story</div>
+                        </div>
+                        <div class="stage" data-stage="character">
+                            <div class="stage-indicator">2</div>
+                            <div class="stage-label">Characters</div>
+                        </div>
+                        <div class="stage" data-stage="scene">
+                            <div class="stage-indicator">3</div>
+                            <div class="stage-label">Scenes</div>
+                        </div>
+                        <div class="stage" data-stage="music">
+                            <div class="stage-indicator">4</div>
+                            <div class="stage-label">Music</div>
+                        </div>
+                        <div class="stage" data-stage="feedback">
+                            <div class="stage-indicator">5</div>
+                            <div class="stage-label">Assessment</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Output -->
+                <div class="output-panel">
+                    <h3>📚 Story Outline</h3>
+                    <div class="panel-content">
+                        <p id="storyOutline"></p>
+                        <details class="collapsible">
+                            <summary>📖 Story Acts</summary>
+                            <div id="storyActs"></div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Characters Output -->
+                <div class="output-panel">
+                    <h3>👥 Characters</h3>
+                    <div class="panel-content" id="charactersPanel"></div>
+                </div>
+
+                <!-- Scenes Output -->
+                <div class="output-panel">
+                    <h3>🎬 Scenes</h3>
+                    <div class="panel-content" id="scenesPanel"></div>
+                </div>
+
+                <!-- Music Output -->
+                <div class="output-panel">
+                    <h3>🎵 Music & Soundtrack</h3>
+                    <div class="panel-content" id="musicPanel"></div>
+                </div>
+
+                <!-- Quality Assessment -->
+                <div class="output-panel">
+                    <h3>⭐ Quality Assessment</h3>
+                    <div class="panel-content">
+                        <div id="qualityScores" class="quality-scores"></div>
+                        <div id="recommendations" class="recommendations"></div>
+                    </div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div class="feedback-section">
+                    <h3>💬 Provide Feedback</h3>
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label for="feedbackScore">Rate this story (0-5 stars):</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="feedbackScore" value="5">
+                                <label for="star5">⭐</label>
+                                <input type="radio" id="star4" name="feedbackScore" value="4">
+                                <label for="star4">⭐</label>
+                                <input type="radio" id="star3" name="feedbackScore" value="3" checked>
+                                <label for="star3">⭐</label>
+                                <input type="radio" id="star2" name="feedbackScore" value="2">
+                                <label for="star2">⭐</label>
+                                <input type="radio" id="star1" name="feedbackScore" value="1">
+                                <label for="star1">⭐</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedbackComments">Comments (optional):</label>
+                            <textarea
+                                id="feedbackComments"
+                                name="feedbackComments"
+                                placeholder="What did you think? Any suggestions for improvement?"
+                                rows="3"
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary">📤 Submit Feedback</button>
+                    </form>
+                </div>
+
+                <!-- Pipeline Log -->
+                <details class="collapsible">
+                    <summary>📋 Pipeline Execution Log</summary>
+                    <div id="pipelineLog" class="pipeline-log"></div>
+                </details>
+
+                <!-- Memory Status -->
+                <details class="collapsible">
+                    <summary>💾 Memory Status</summary>
+                    <div id="memoryStatus" class="memory-status"></div>
+                </details>
+            </section>
+        </main>
+
+        <footer>
+            <p>🤖 Powered by StoryWeaver AI | Built with advanced NLP and multi-agent architecture</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
